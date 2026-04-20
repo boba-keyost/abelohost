@@ -24,6 +24,7 @@ class ConfigTest extends TestCase {
 
         $this->assertEquals(
             [
+                'log_level' => 1,
                 'db_host' => 'testhost',
                 'db_name' => 'testname',
                 'db_user' => 'abelohost',

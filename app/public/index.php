@@ -1,11 +1,17 @@
 <?php
-use Router\Router;
+
+use App\App;
 
 require_once __DIR__ . '/../vendor/autoload.php';
-try {
-    $router = new Router();
 
-    $router->run();
+ini_set('display_errors', 1);
+ini_set('xdebug.force_display_errors', 1);
+error_reporting(E_ALL);
+
+try {
+    $app = new App();
+
+    $app->run();
 } catch (Throwable $exception) {
-    echo $exception->getMessage();
+    \Renderers\RendererFabric::get()->render($exception);
 }

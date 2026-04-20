@@ -2,12 +2,15 @@
 
 namespace Router;
 
+use App\Logger;
 use Config\Config;
 use Exception;
+use Extensions\LoggerExtension;
 use ReflectionClass;
+use Renderers\RendererFabric;
 use Router\Routes\DefaultRoute;
 
-class Router {
+class Router extends LoggerExtension{
     protected array $paths = [];
 
     /**
@@ -15,6 +18,13 @@ class Router {
      */
     public function __construct() {
         $this->registerRoute(new DefaultRoute());
+    }
+    public function registerRoutes(Route ...$routes): void {
+        foreach ($routes as $route) {
+            if ($route instanceof Route) {
+                $this->registerRoute($route);
+            }
+        }
     }
 
     /**
@@ -31,6 +41,14 @@ class Router {
             $attr = $attribute->newInstance();
             $path = "/" . trim($attr->path, " \n\r\t\v\0\/");
             $method = strtoupper($attr->method);
+            $parameters = $attr->parameters;
+            if (!empty($parameters)) {
+                $route->setParameters($parameters);
+                if (!empty($parameters["renderer"])) {
+                    $route->setRenderer(RendererFabric::get($parameters["renderer"]));
+                }
+            }
+            $route->setLogger($this->getLogger());
 
             if (empty($this->paths[$path])) {
                 $this->paths[$path] = [];
@@ -98,8 +116,7 @@ class Router {
     }
 
     public function resolve(string $method = "", string $path = "", array &$parameters = []): ?Route {
-        $pathList = array_keys($this->paths);
-        arsort($pathList);
+        $pathList = array_reverse(array_keys($this->paths));
         foreach ($pathList as $p) {
             $resolved = static::resolvePath($p, $path, $parameters);
             if ($resolved) {

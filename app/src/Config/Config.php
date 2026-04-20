@@ -6,31 +6,38 @@ use ReflectionObject;
 
 class Config{
     #[ConfigAttribute(ConfigAttribute::DB_HOST, "mysql")]
-    protected string $dbHost {
+    public string $dbHost {
         get {
             $this->load();
             return $this->dbHost;
         }
     }
     #[ConfigAttribute(ConfigAttribute::DB_USER, "abelohost")]
-    protected string $dbUser{
+    public string $dbUser{
         get {
             $this->load();
             return $this->dbUser;
         }
     }
     #[ConfigAttribute(ConfigAttribute::DB_PASSWORD, "")]
-    protected string $dbPassword{
+    public string $dbPassword{
         get {
             $this->load();
             return $this->dbPassword;
         }
     }
     #[ConfigAttribute(ConfigAttribute::DB_NAME, "abelohost")]
-    protected string $dbName{
+    public string $dbName{
         get {
             $this->load();
             return $this->dbName;
+        }
+    }
+    #[ConfigAttribute(ConfigAttribute::LOG_LEVEL, 0)]
+    public string $logLevel{
+        get {
+            $this->load();
+            return $this->logLevel;
         }
     }
 
@@ -46,6 +53,13 @@ class Config{
         static::$environment = $environment;
     }
 
+    static public function getEnvironment(): string {
+        if (is_null(static::$environment)) {
+            static::setEnvironment("development");
+        }
+        return static::$environment;
+    }
+
     static public function setRootDirectory(string $rootDirectory): void {
         static::$rootDirectory = $rootDirectory;
     }
@@ -57,10 +71,11 @@ class Config{
 
     static public function getInstance(): Config
     {
-        if (empty(static::$instances[static::$environment])) {
-            static::$instances[static::$environment] = new Config(static::$environment);
+        $env = static::getEnvironment();
+        if (empty(static::$instances[$env])) {
+            static::$instances[$env] = new Config($env);
         }
-        return static::$instances[static::$environment];
+        return static::$instances[$env];
     }
 
     protected function __clone() {}

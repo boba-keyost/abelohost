@@ -63,6 +63,16 @@
       <path value="$PROJECT_DIR$/app/vendor/sebastian/version" />
       <path value="$PROJECT_DIR$/app/vendor/staabm/side-effects-detector" />
       <path value="$PROJECT_DIR$/app/vendor/theseer/tokenizer" />
+      <path value="$PROJECT_DIR$/app/vendor/league/uri" />
+      <path value="$PROJECT_DIR$/app/vendor/league/uri-interfaces" />
+      <path value="$PROJECT_DIR$/app/vendor/symfony/filesystem" />
+      <path value="$PROJECT_DIR$/app/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/app/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/app/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/app/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/app/vendor/scssphp/scssphp" />
+      <path value="$PROJECT_DIR$/app/vendor/scssphp/source-span" />
+      <path value="$PROJECT_DIR$/app/vendor/smarty/smarty" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

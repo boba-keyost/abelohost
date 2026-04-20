@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/app/src" isTestSource="false" packagePrefix="\" />
       <sourceFolder url="file://$MODULE_DIR$/app/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/app/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/myclabs/deep-copy" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/nikic/php-parser" />
@@ -36,6 +37,16 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/sebastian/version" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/staabm/side-effects-detector" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/theseer/tokenizer" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/league/uri" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/league/uri-interfaces" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/psr/http-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/psr/http-message" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/scssphp/scssphp" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/scssphp/source-span" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/smarty/smarty" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/filesystem" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/polyfill-mbstring" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
