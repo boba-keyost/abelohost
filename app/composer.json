@@ -1,0 +1,23 @@
+{
+    "name": "boba_keyost/abelohost",
+    "version": "1.0.0",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": { "Tests\\": "tests/" }
+    },
+    "authors": [
+        {
+            "name": "boba_keyost",
+            "email": "boba.keyost@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^12.5"
+    }
+}
