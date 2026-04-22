@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000001-categories.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000002-posts.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000003-posts_categories.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000004-post_views.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000005-keywords.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000006-posts_keywords.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000007-seed-categories.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000008-seed-keywords.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000009-seed-posts.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000010-seed-posts_categories.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000011-seed-posts_keywords.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000001-categories.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000002-posts.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000003-posts_categories.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000004-post_views.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000005-keywords.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000006-posts_keywords.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000007-seed-categories.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000008-seed-keywords.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000009-seed-posts.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000010-seed-posts_categories.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000011-seed-posts_keywords.sql" dialect="MySQL" />
+  </component>
+</project>

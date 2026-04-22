@@ -1,0 +1,32 @@
+{
+    "name": "boba_keyost/abelohost-migrate",
+    "version": "1.0.0",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "\\": "bin/"
+        }
+    },
+    "authors": [
+        {
+            "name": "boba_keyost",
+            "email": "boba.keyost@gmail.com"
+        }
+    ],
+    "require": {
+        "byjg/migration": "^6.0"
+    },
+    "scripts": {
+        "migrate:version": "@php bin/migrate.php version",
+        "migrate:install": "@php bin/migrate.php install",
+        "migrate:install-up": [
+            "@composer migrate:install",
+            "@composer migrate:up"
+        ],
+        "migrate:up": "@php bin/migrate.php up",
+        "migrate:down": "@php bin/migrate.php down",
+        "migrate:reset": "@php bin/migrate.php reset",
+        "migrate:create": "@php bin/migrate.php create"
+    }
+}

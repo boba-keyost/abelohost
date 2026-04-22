@@ -3,23 +3,63 @@ version: '3.7'
 services:
   mysql:
     image: mysql:8.0
+    container_name: abelohost-mysql
+    hostname: abelohost-mysql
     command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: probe
+      MYSQL_USER: abelohost_test_user
+      MYSQL_PASSWORD: abelohost_test_password
+      MYSQL_DATABASE: abelohost_test
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
-      - '3306:3306'
+      - '3316:3306'
     volumes:
       - './build/mysql/data:/var/lib/mysql'
       - './build/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf'
+
+#  ollama:
+#    image: docker.io/ollama/ollama:latest
+#    ports:
+#      - "11434:11434"
+#    container_name: ollama
+#    pull_policy: always
+#    tty: true
+#    restart: always
+#    environment:
+#      - OLLAMA_KEEP_ALIVE=24h
+#      - OLLAMA_HOST=0.0.0.0
+#    volumes:
+#      - './build/ollama:/root/.ollama'
+
+  migrations:
+      build:
+        dockerfile: build/docker/migrations.Dockerfile
+      working_dir: /app
+      environment:
+        MIGRATION_CONNECTION: mysql://abelohost_test_user:abelohost_test_password@abelohost-mysql/abelohost_test
+        MIGRATION_PATH: /app/structure
+      security_opt:
+        - "seccomp:unconfined"
+      cap_add:
+        - SYS_PTRACE
+      volumes:
+        - ./build/mysql/structure:/app/structure
+      restart: on-failure
+      command: composer migrate:install-up
+      depends_on:
+        mysql:
+          condition: service_started
 
   app:
     build:
       dockerfile: build/docker/app.Dockerfile
     working_dir: /var/www/html
     environment:
-      - PHP_IDE_CONFIG=${PHP_IDE_CONFIG?}
+      PHP_IDE_CONFIG: ${PHP_IDE_CONFIG}
+      ABELOHOST_DB_HOST: abelohost-mysql
+      ABELOHOST_DB_USER: abelohost_test_user
+      ABELOHOST_DB_PASSWORD: abelohost_test_password
+      ABELOHOST_DB_NAME: abelohost_test
     security_opt:
       - "seccomp:unconfined"
     cap_add:
