@@ -4,13 +4,15 @@ namespace Renderers;
 
 use Exception;
 
-class RendererFabric {
+class RendererFabric
+{
     protected static array $renderers = [];
 
     /**
      * @throws Exception
      */
-    public static function get(RendererType $type = RendererType::Default): Renderer{
+    public static function get(RendererType $type = RendererType::Default): Renderer
+    {
         $k = $type->name;
         if (!array_key_exists($k, static::$renderers)) {
             static::$renderers[$k] = match ($type) {

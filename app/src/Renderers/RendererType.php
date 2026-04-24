@@ -2,7 +2,8 @@
 
 namespace Renderers;
 
-enum RendererType{
+enum RendererType
+{
     case Default;
     case Html;
     case Scss;

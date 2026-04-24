@@ -13,5 +13,5 @@ try {
 
     $app->run();
 } catch (Throwable $exception) {
-    \Renderers\RendererFabric::get()->render($exception);
+    \Renderers\RendererFabric::get()->renderError($exception);
 }

@@ -1,25 +1,37 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Router;
 
-use App\Logger;
-use Config\Config;
 use Exception;
+use Extensions\DBExtension;
 use Extensions\LoggerExtension;
 use ReflectionClass;
 use Renderers\RendererFabric;
 use Router\Routes\DefaultRoute;
+use Throwable;
 
-class Router extends LoggerExtension{
+class Router
+{
+    use LoggerExtension;
+    use DBExtension;
+
     protected array $paths = [];
 
     /**
      * @throws Exception
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->registerRoute(new DefaultRoute());
     }
-    public function registerRoutes(Route ...$routes): void {
+
+    /**
+     * @throws Exception
+     */
+    public function registerRoutes(Route ...$routes): void
+    {
         foreach ($routes as $route) {
             if ($route instanceof Route) {
                 $this->registerRoute($route);
@@ -30,7 +42,8 @@ class Router extends LoggerExtension{
     /**
      * @throws Exception
      */
-    public function registerRoute(Route $route): void {
+    public function registerRoute(Route $route): void
+    {
         $reflection = new ReflectionClass($route);
         $attributes = $reflection->getAttributes(RouteAttribute::class);
         if (empty($attributes)) {
@@ -49,6 +62,7 @@ class Router extends LoggerExtension{
                 }
             }
             $route->setLogger($this->getLogger());
+            $route->setDbGetter($this->getDbGetter());
 
             if (empty($this->paths[$path])) {
                 $this->paths[$path] = [];
@@ -58,7 +72,8 @@ class Router extends LoggerExtension{
         }
     }
 
-    public static function resolvePath(string $routePath, string $path, array &$parameters = []): bool {
+    public static function resolvePath(string $routePath, string $path, array &$parameters = []): bool
+    {
         $isReg = false;
         if (str_contains($routePath, "*")) {
             $routePath = str_replace("*", "{-}", $routePath);
@@ -115,7 +130,8 @@ class Router extends LoggerExtension{
         return false;
     }
 
-    public function resolve(string $method = "", string $path = "", array &$parameters = []): ?Route {
+    public function resolve(string $method = "", string $path = "", array &$parameters = []): ?Route
+    {
         $pathList = array_reverse(array_keys($this->paths));
         foreach ($pathList as $p) {
             $resolved = static::resolvePath($p, $path, $parameters);
@@ -146,7 +162,11 @@ class Router extends LoggerExtension{
         $parameters = [];
         $route = $this->resolve($method, $path, $parameters);
         if (!is_null($route)) {
-            $route->run($parameters, $body);
+            try {
+                $route->run($parameters, $body);
+            } catch (Throwable $e) {
+                $route->error($e);
+            }
         }
     }
 }

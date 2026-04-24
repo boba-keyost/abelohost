@@ -4,7 +4,8 @@ namespace Extensions;
 
 use App\Logger;
 
-class LoggerExtension implements WithLogger {
+trait LoggerExtension
+{
     protected ?Logger $logger = null;
 
     public function setLogger(Logger $logger): static
@@ -13,7 +14,8 @@ class LoggerExtension implements WithLogger {
         return $this;
     }
 
-    public function getLogger(): Logger {
+    public function getLogger(): Logger
+    {
         if (is_null($this->logger)) {
             $this->logger = Logger::getDefault();
         }

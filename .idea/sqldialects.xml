@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/app/src/DB/Models/Posts.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000001-categories.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000002-posts.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/down/000003-posts_categories.sql" dialect="MySQL" />
@@ -23,5 +24,6 @@
     <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000009-seed-posts.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000010-seed-posts_categories.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/build/mysql/structure/migrations/up/000011-seed-posts_keywords.sql" dialect="MySQL" />
+    <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>

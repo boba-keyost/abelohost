@@ -14,6 +14,6 @@ FROM trafex/php-nginx:latest
 COPY --chown=nginx --from=composer /app /var/www/html
 
 USER root
-RUN apk add --no-cache php85-xdebug
+RUN apk add --no-cache php85-xdebug php85-pdo  php85-pdo_mysql
 RUN sed -i -e 's/root \/var\/www\/html/root \/var\/www\/html\/public/g' /etc/nginx/conf.d/default.conf
 USER nobody

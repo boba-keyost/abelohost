@@ -1,4 +1,11 @@
 @import "variables";
-body{
+
+body {
     background-color: $bg-color;
+    max-width: 1000px;
+}
+
+pre {
+    white-space: pre-wrap;
+    font-family: $font-family-mono;
 }

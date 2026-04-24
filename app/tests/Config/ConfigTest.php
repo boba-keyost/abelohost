@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
 namespace Tests\Config;
 
+use Config\ConfigLoader;
+use Config\Error;
+use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -16,11 +19,11 @@ class ConfigTest extends TestCase {
     #[Test]
     public function testToArray(): void
     {
-        Config::setPrefix("ABELOHOSTTEST");
-        Config::setEnvironment("test");
-        Config::setRootDirectory(__DIR__);
-
-        $cfg = Config::getInstance()->toArray();
+        $loader = new ConfigLoader();
+        $loader->setPrefix("ABELOHOSTTEST");
+        $loader->setEnvironment("test");
+        $loader->setRootDirectory(__DIR__);
+        $cfg = new Config($loader)->toArray();
 
         $this->assertEquals(
             [
@@ -32,5 +35,23 @@ class ConfigTest extends TestCase {
             ],
             $cfg,
         );
+    }
+
+    #[Test]
+    public function testGetException(): void
+    {
+        $this->expectException(Error::class);
+        $this->expectExceptionMessage(Error::ERROR_PROPERTY_UNKNOWN);
+        $cfg = new Config();
+        $cfg->smthing;
+    }
+
+    #[Test]
+    public function testSetException(): void
+    {
+        $this->expectException(Error::class);
+        $this->expectExceptionMessage(Error::ERROR_PROPERTY_SET_RESTRICTED);
+        $cfg = new Config();
+        $cfg->logLevel = 1;
     }
 }

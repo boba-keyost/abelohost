@@ -4,13 +4,13 @@ namespace Router\Routes;
 
 use Renderers\RendererType;
 use Router\BaseRoute;
-use Renderers\Renderer;
 use Router\RouteAttribute;
 
 #[RouteAttribute("", "/*", ["renderer" => RendererType::Json, "rendererParameters" => ["prettyPrint" => true]])]
-class DefaultRoute extends BaseRoute {
-    public function run(array $parameters = [], mixed $body = null): void
+class DefaultRoute extends BaseRoute
+{
+    public function handle(array $parameters = [], mixed $body = null): mixed
     {
-        $this->respond(["parameters" => $parameters, "body" => $body]);
+        return ["parameters" => $parameters, "body" => $body];
     }
 }

@@ -3,11 +3,17 @@
 namespace Router;
 
 use Exception;
+use Extensions\DBExtension;
 use Extensions\LoggerExtension;
 use Renderers\Renderer;
 use Renderers\RendererFabric;
+use Throwable;
 
-class BaseRoute extends LoggerExtension implements Route {
+abstract class BaseRoute implements Route
+{
+    use LoggerExtension;
+    use DBExtension;
+
     protected ?Renderer $renderer;
     protected array $parameters;
 
@@ -16,16 +22,26 @@ class BaseRoute extends LoggerExtension implements Route {
      */
     public function run(array $parameters = [], mixed $body = null): void
     {
-        $this->getRenderer()->render("default route");
+        try {
+            $resp = $this->handle($parameters, $body);
+            if ($resp instanceof Throwable) {
+                $this->error($resp);
+            } else {
+                $this->respond($resp);
+            }
+        } catch (Throwable $e) {
+            $this->error($e);
+        }
     }
 
     /**
      * @throws Exception
      */
-    public function respond(mixed $data): void {
+    public function respond(mixed $data): void
+    {
         try {
             $this->getRenderer()->render($data, $this->parameters["rendererParameters"] ?? null);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->error($e->getMessage());
         }
     }
@@ -33,12 +49,17 @@ class BaseRoute extends LoggerExtension implements Route {
     /**
      * @throws Exception
      */
-    public function error(mixed $message, int $code = 500): void {
+    public function error(mixed $message, int $code = 500): void
+    {
         $this->getLogger()->error($message);
+        if ($message instanceof Error) {
+            $code = $message->getCode();
+        }
         $this->getRenderer()->renderError($message, $code, $this->parameters["rendererParameters"] ?? null);
     }
 
-    public function setParameters(array $parameters): static{
+    public function setParameters(array $parameters): static
+    {
         $this->parameters = $parameters;
         return $this;
     }
@@ -52,7 +73,8 @@ class BaseRoute extends LoggerExtension implements Route {
     /**
      * @throws Exception
      */
-    public function getRenderer(): Renderer {
+    public function getRenderer(): Renderer
+    {
         if (is_null($this->renderer)) {
             $this->renderer = RendererFabric::get();
         }
