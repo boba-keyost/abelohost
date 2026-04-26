@@ -107,6 +107,18 @@
       <path value="$PROJECT_DIR$/app/vendor/psr/event-dispatcher" />
       <path value="$PROJECT_DIR$/app/vendor/squizlabs/php_codesniffer" />
       <path value="$PROJECT_DIR$/app/vendor/fastvolt/markdown" />
+      <path value="$PROJECT_DIR$/migrate/vendor/byjg/serializer" />
+      <path value="$PROJECT_DIR$/migrate/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/migrate/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/migrate/vendor/composer" />
+      <path value="$PROJECT_DIR$/migrate/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/migrate/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/migrate/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/migrate/vendor/byjg/migration" />
+      <path value="$PROJECT_DIR$/migrate/vendor/byjg/xmlutil" />
+      <path value="$PROJECT_DIR$/migrate/vendor/byjg/anydataset-db" />
+      <path value="$PROJECT_DIR$/migrate/vendor/byjg/uri" />
+      <path value="$PROJECT_DIR$/migrate/vendor/byjg/anydataset" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

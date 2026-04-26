@@ -1,0 +1,1 @@
+<div class="no-data">{$content|default:"no-data"}</div>

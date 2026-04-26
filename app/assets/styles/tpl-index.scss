@@ -1,0 +1,9 @@
+@import "variables";
+
+.short-categories {
+    margin-block: 40px 60px;
+
+    > .section {
+        @include margin(null, 60px);
+    }
+}

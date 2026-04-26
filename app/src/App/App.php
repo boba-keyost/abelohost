@@ -5,10 +5,13 @@ namespace App;
 use Config\Config;
 use DB\DB;
 use Exception;
-use Extensions\LoggerExtension;
+use Extensions\ConfigExtension;
 use Extensions\DBExtension;
+use Extensions\LoggerExtension;
 use Router\Router;
+use Router\Routes\CategoryRoute;
 use Router\Routes\IndexRoute;
+use Router\Routes\PostRoute;
 use Router\Routes\ScssRoute;
 use Throwable;
 
@@ -16,6 +19,7 @@ class App
 {
     use LoggerExtension;
     use DBExtension;
+    use ConfigExtension;
 
     protected Router $router;
 
@@ -24,15 +28,20 @@ class App
      */
     public function __construct()
     {
-        $dbGetter = fn() => new DB(Config::defaultConfig());
+        $config = Config::defaultConfig();
+        $this->setConfig($config);
+        $dbGetter = fn () => new DB($this->getConfig());
         $this->setDbGetter($dbGetter);
         $this->router = new Router();
         $this->setLogger(Logger::getDefault());
         $this->router->setLogger($this->logger);
         $this->router->setDbGetter($dbGetter);
+        $this->router->setConfig($this->getConfig());
         $this->router->registerRoutes(
             new ScssRoute(),
             new IndexRoute(),
+            new CategoryRoute(),
+            new PostRoute(),
         );
     }
 

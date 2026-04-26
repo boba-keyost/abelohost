@@ -3,6 +3,10 @@
 namespace Renderers;
 
 use Exception;
+use Renderers\Renderer\HtmlRenderer;
+use Renderers\Renderer\JsonRenderer;
+use Renderers\Renderer\ScssRenderer;
+use Renderers\Renderer\TextRenderer;
 
 class RendererFabric
 {

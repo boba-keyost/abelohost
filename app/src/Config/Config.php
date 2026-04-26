@@ -2,11 +2,11 @@
 
 namespace Config;
 
-use ReflectionClass;
-use ReflectionObject;
-
 class Config extends BaseConfig
 {
+    #[ConfigAttribute(ConfigAttribute::DEBUG, true)]
+    protected bool $debug = false;
+
     #[ConfigAttribute(ConfigAttribute::DB_HOST, "mysql")]
     protected string $dbHost = "";
 

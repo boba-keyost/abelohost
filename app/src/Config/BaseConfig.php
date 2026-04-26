@@ -45,6 +45,7 @@ abstract class BaseConfig
 
     public function toArray(): array
     {
+        $this->load();
         $reflection = new ReflectionObject($this);
 
         $properties = $reflection->getProperties();

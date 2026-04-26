@@ -14,6 +14,7 @@ final class ConfigAttribute
         $this->defaultValue = $defaultValue;
     }
 
+    public const string DEBUG = "debug";
     public const string LOG_LEVEL = 'log_level';
     public const string DB_HOST = 'db_host';
     public const string DB_PORT = 'db_port';

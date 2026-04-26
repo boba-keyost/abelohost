@@ -11,6 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/app/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/app/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/migrate/bin" isTestSource="false" packagePrefix="\" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/myclabs/deep-copy" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/nikic/php-parser" />
@@ -79,6 +80,18 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/service-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/stopwatch" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/string" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/byjg/anydataset" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/byjg/anydataset-db" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/byjg/migration" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/byjg/serializer" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/byjg/uri" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/byjg/xmlutil" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/psr/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/psr/http-message" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/migrate/vendor/symfony/yaml" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

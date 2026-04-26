@@ -1,0 +1,2 @@
+{include file="components/code.tpl" class="code-section-code" assign="code" content=$content modifier=$modifier}
+{include file="components/section.tpl" class="code-section" content=$code title=$title level=$level}

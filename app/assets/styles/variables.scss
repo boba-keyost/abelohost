@@ -1,2 +1,96 @@
-$bg-color: #efefef !default;
-$font-family-mono: monospace !default;
+$bg-color: #fff !default;
+$default-color: #484848 !default;
+$link-color: #83919a !default;
+$link-color-active: #4d6678 !default;
+
+$font-family: Ubuntu, Arial, san-serif !default;
+$font-family-mono: "Ubuntu Mono", monospace !default;
+$font-size-default: 12px !default;
+$font-weight-bold: 900 !default;
+$font-weight-medium: 700 !default;
+$font-weight-default: 500 !default;
+$font-weight-thin: 300 !default;
+
+$content-width: 1100px !default;
+
+$header-bg-color: #355363 !default;
+$header-color: #fff !default;
+$header-border-color: #29485a;
+$header-size: 40px !default;
+
+$footer-bg-color: #355363 !default;
+$footer-color: #fff !default;
+$footer-border-color: #29485a !default;
+$footer-size: 170px !default;
+
+$input-color: $default-color !default;
+$input-bg-color: $bg-color !default;
+$input-border-color: $header-bg-color !default;
+
+$button-color: $header-color !default;
+$button-bg-color: $header-bg-color !default;
+$button-border-color: $header-border-color !default;
+
+$heading-1-color: #2c2c2c !default;
+$heading-1-font-size: 2.5rem !default;
+$heading-1-font-weight: $font-weight-bold !default;
+$heading-1-font-style: normal !default;
+$heading-1-margin-inline: 0 !default;
+$heading-1-margin-block: 20px !default;
+$heading-2-font-size: 1.5rem !default;
+$heading-2-color: $heading-1-color !default;
+$heading-2-font-weight: $font-weight-bold !default;
+$heading-2-font-style: normal !default;
+$heading-2-margin-inline: 0 !default;
+$heading-2-margin-block: 15px !default;
+$heading-3-color: #898aa8 !default;
+$heading-3-font-size: 1.2rem !default;
+$heading-3-font-weight: $font-weight-medium !default;
+$heading-3-font-style: normal !default;
+$heading-3-margin-inline: 0 !default;
+$heading-3-margin-block: 10px !default;
+$heading-4-color: $heading-3-color !default;
+$heading-4-font-size: 1rem !default;
+$heading-4-font-weight: $font-weight-default !default;
+$heading-4-font-style: normal !default;
+$heading-4-margin-inline: 0 !default;
+$heading-4-margin-block: 5px !default;
+$heading-5-color: $heading-4-color !default;
+$heading-5-font-size: 1rem !default;
+$heading-5-font-weight: $font-weight-default !default;
+$heading-5-font-style: italic !default;
+$heading-5-margin-inline: 0 !default;
+$heading-5-margin-block: 5px !default;
+$heading-6-color: $heading-5-color !default;
+$heading-6-font-size: 1rem !default;
+$heading-6-font-weight: $font-weight-thin !default;
+$heading-6-font-style: italic !default;
+$heading-6-margin-inline: 0 !default;
+$heading-6-margin-block: 5px !default;
+
+@mixin margin($margin-inline: null, $margin-block: null) {
+    @if $margin-inline != null {
+        margin-inline: $margin-inline;
+    }
+    @if $margin-block != null {
+        margin-block: $margin-block;
+    }
+
+    &:first-child {
+        @if $margin-inline != null {
+            margin-inline-start: 0;
+        }
+        @if $margin-block != null {
+            margin-block-start: 0;
+        }
+    }
+
+    &:last-child {
+        @if $margin-inline != null {
+            margin-inline-end: 0;
+        }
+        @if $margin-block != null {
+            margin-block-end: 0;
+        }
+    }
+}

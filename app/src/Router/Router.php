@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Router;
 
 use Exception;
+use Extensions\ConfigExtension;
 use Extensions\DBExtension;
 use Extensions\LoggerExtension;
 use ReflectionClass;
@@ -16,6 +17,7 @@ class Router
 {
     use LoggerExtension;
     use DBExtension;
+    use ConfigExtension;
 
     protected array $paths = [];
 
@@ -63,6 +65,7 @@ class Router
             }
             $route->setLogger($this->getLogger());
             $route->setDbGetter($this->getDbGetter());
+            $route->setConfig($this->getConfig());
 
             if (empty($this->paths[$path])) {
                 $this->paths[$path] = [];
@@ -100,7 +103,8 @@ class Router
         }
         $matches = [];
         if (
-            $isReg && preg_match("/^" . $routePath . "$/Ui", $path, $matches)
+            $isReg
+            && preg_match("/^" . $routePath . "$/Ui", $path, $matches)
             || $path === $routePath
         ) {
             foreach ($paramOrder as $k => $param) {
@@ -115,13 +119,27 @@ class Router
                 }
             }
             if (!empty($query)) {
-                $queryParameters = [];
-                parse_str($query, $queryParameters);
-                foreach ($queryParameters as $q => $p) {
-                    if (array_key_exists($q, $parameters)) {
-                        $q = 'query-' . $q;
+                $parameters["query"] = [];
+                parse_str($query, $parameters["query"]);
+                foreach ($parameters["query"] as $q => $p) {
+                    switch ($q) {
+                        case "limit":
+                        case "offset":
+                            $p = intval($p);
+                            break;
+                        /*case "sort":
+                            if (!is_array($p)) {
+                                $p = [
+                                    "field" => (string) $p
+                                ];
+                            }
+                            break;*/
                     }
-                    $parameters[$q] = $p;
+                    if (!is_null($p)) {
+                        $parameters["query"][$q] = $p;
+                    } else {
+                        unset($parameters["query"][$q]);
+                    }
                 }
             }
 

@@ -1,0 +1,174 @@
+@import "variables";
+
+body {
+    background-color: $bg-color;
+    font-size: $font-size-default;
+    display: flex;
+    flex-flow: column nowrap;
+    min-height: 100vh;
+    justify-content: flex-start;
+}
+
+* {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+h1 {
+    font-size: $heading-1-font-size;
+    font-weight: $heading-1-font-weight;
+    font-style: $heading-1-font-style;
+    color: $heading-1-color;
+    margin-inline: $heading-1-margin-inline;
+    margin-block: $heading-1-margin-block;
+}
+
+h2 {
+    font-size: $heading-2-font-size;
+    font-weight: $heading-2-font-weight;
+    font-style: $heading-2-font-style;
+    color: $heading-2-color;
+    margin-inline: $heading-2-margin-inline;
+    margin-block: $heading-2-margin-block;
+}
+
+h3 {
+    font-size: $heading-3-font-size;
+    font-weight: $heading-3-font-weight;
+    font-style: $heading-3-font-style;
+    color: $heading-3-color;
+    margin-inline: $heading-3-margin-inline;
+    margin-block: $heading-3-margin-block;
+}
+
+h4 {
+    font-size: $heading-4-font-size;
+    font-weight: $heading-4-font-weight;
+    font-style: $heading-4-font-style;
+    color: $heading-4-color;
+    margin-inline: $heading-4-margin-inline;
+    margin-block: $heading-4-margin-block;
+}
+
+h5 {
+    font-size: $heading-5-font-size;
+    font-weight: $heading-5-font-weight;
+    font-style: $heading-5-font-style;
+    color: $heading-5-color;
+    margin-inline: $heading-5-margin-inline;
+    margin-block: $heading-5-margin-block;
+}
+
+h6 {
+    font-size: $heading-6-font-size;
+    font-weight: $heading-6-font-weight;
+    font-style: $heading-6-font-style;
+    color: $heading-6-color;
+    margin-inline: $heading-6-margin-inline;
+    margin-block: $heading-6-margin-block;
+}
+
+pre {
+    white-space: pre-wrap;
+    font-family: $font-family-mono;
+}
+
+a {
+    color: $link-color;
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+
+    &:active,
+    &:focus,
+    &:hover {
+        color: $link-color-active;
+    }
+
+    &:active,
+    &:focus {
+        outline: currentColor dotted 1px;
+    }
+}
+
+input {
+    color: $input-color;
+    border: 1px solid $input-border-color;
+    background-color: $input-bg-color;
+    box-sizing: border-box;
+}
+
+button {
+    color: $button-color;
+    border: 1px solid $button-border-color;
+    background-color: $button-bg-color;
+    box-sizing: border-box;
+}
+
+header {
+    flex: 0 0 $header-size;
+    box-sizing: border-box;
+    background-color: $header-bg-color;
+    box-shadow: 0 0 2px $header-border-color;
+    border-width: 0 0 1px;
+    border-style: solid;
+    border-color: $header-border-color;
+    color: $header-color;
+
+    > .content {
+        padding: 10px 0;
+    }
+
+    a {
+        color: inherit;
+
+        &:hover,
+        &:active,
+        &:focus {
+            color: inherit;
+        }
+    }
+
+    .logo {
+        display: inline-block;
+        text-decoration: none;
+        font-weight: $font-weight-bold;
+        line-height: 20px;
+        font-size: 20px;
+        color: inherit;
+    }
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    margin-top: auto;
+    flex: 0 1 $footer-size;
+    box-sizing: border-box;
+    background-color: $footer-bg-color;
+    box-shadow: 0 -1px 2px $footer-border-color;
+    border-width: 1px 0 0;
+    border-style: solid;
+    border-color: $footer-border-color;
+    color: $footer-color;
+
+    > .content {
+        padding: 90px 0 50px;
+    }
+
+    .copyright {
+        text-align: center;
+    }
+}
+
+header,
+footer,
+main {
+    > .content {
+        width: 100%;
+        max-width: $content-width;
+        margin: 0 auto;
+    }
+}

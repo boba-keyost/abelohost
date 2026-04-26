@@ -12,6 +12,7 @@ class ParamsList
 
     protected array $listParamsCount = [];
 
+
     public static function prepare(array | self $paramsList): static
     {
         return $paramsList instanceof static
@@ -27,22 +28,11 @@ class ParamsList
                 $type = $value['type'] ?? $value[1];
                 $value = $value['value'] ?? $value[0];
             }
-            if (is_array($value)) {
-                $this->listParamsCount[$key] = count($value);
-                foreach ($value as $k => $v) {
-                    $this->set(
-                        is_numeric($key) ? $key + $k : $key . "_" . $k,
-                        $value,
-                        $type,
-                    );
-                }
-            } else {
-                $this->set(
-                    $key,
-                    $value,
-                    $type,
-                );
-            }
+            $this->set(
+                $key,
+                $value,
+                $type,
+            );
         }
     }
 
@@ -51,12 +41,41 @@ class ParamsList
         return $this->listParamsCount;
     }
 
-    public function set(string | int $param, mixed $value, int $type = PDO::PARAM_STR): void
+    public function hasListParamsCount(string $param): bool
+    {
+        return !empty($this->listParamsCount) && $this->listParamsCount[$param] > 0;
+    }
+
+    public function set(string | int $param, mixed $value, int $type = PDO::PARAM_STR): static
+    {
+        if (is_iterable($value)) {
+            $this->listParamsCount[$param] = count($value);
+            foreach ($value as $k => $v) {
+                $this->setParam(
+                    is_numeric($param) ? $param + $k : $param . "_" . $k,
+                    $v,
+                    $type,
+                );
+            }
+        } else {
+            $this->setParam(
+                $param,
+                $value,
+                $type,
+            );
+        }
+
+        return $this;
+    }
+
+    protected function setParam(string | int $param, mixed $value, int $type = PDO::PARAM_STR): static
     {
         $this->paramsMap[$param] = [$value, $type];
         if (!$this->has($param)) {
             $this->paramsOrder[] = $param;
         }
+
+        return $this;
     }
 
     public function has(string | int $param): bool
@@ -88,7 +107,7 @@ class ParamsList
 
     public function getParamList(): array
     {
-        $pl =  array_map(
+        $pl = array_map(
             fn ($p) => [is_numeric($p) ? $p : ":" . $p, ...$this->getParam($p)],
             $this->paramsOrder,
         );

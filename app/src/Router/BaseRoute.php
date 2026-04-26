@@ -3,6 +3,7 @@
 namespace Router;
 
 use Exception;
+use Extensions\ConfigExtension;
 use Extensions\DBExtension;
 use Extensions\LoggerExtension;
 use Renderers\Renderer;
@@ -13,6 +14,7 @@ abstract class BaseRoute implements Route
 {
     use LoggerExtension;
     use DBExtension;
+    use ConfigExtension;
 
     protected ?Renderer $renderer;
     protected array $parameters;
@@ -67,6 +69,7 @@ abstract class BaseRoute implements Route
     public function setRenderer(Renderer $renderer): static
     {
         $this->renderer = $renderer;
+        $this->renderer->setLogger($this->getLogger());
         return $this;
     }
 

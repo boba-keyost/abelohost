@@ -1,0 +1,211 @@
+@import "variables";
+
+.image {
+    display: inline-block;
+}
+
+.section {
+    .title {
+        width: 100%;
+        margin-bottom: 15px;
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .controls {
+            display: flex;
+            flex-flow: row;
+
+            .item {
+                @include margin(15px);
+            }
+        }
+    }
+}
+
+.error-section {
+    margin-block: 20px;
+
+    > .title {
+        margin-bottom: 10px;
+    }
+
+    .details {
+        > .row {
+            @include margin(null, 10px);
+            display: flex;
+            flex-flow: row nowrap;
+
+            dt {
+                flex: 0 0 15%;
+                font-weight: $font-weight-medium;
+                padding-inline: 10px;
+                box-sizing: border-box;
+            }
+
+            dd {
+                flex: 1 1 auto;
+                font-style: italic;
+            }
+        }
+
+        .message {
+            font-size: 1.1rem;
+            white-space: pre-wrap;
+        }
+    }
+}
+
+.short-category {
+    > .content {
+        $m-inline: 15px;
+        $m-block: 15px;
+        display: flex;
+        flex-flow: row wrap;
+        margin-inline: -$m-inline;
+        margin-block: -$m-inline;
+
+        .short-post {
+            flex: 0 1 33%;
+            padding-inline: $m-inline;
+            padding-block: $m-inline;
+            box-sizing: border-box;
+
+            .section-image {
+                width: 100%;
+                height: 225px;
+                overflow: hidden;
+                border-radius: 10px;
+                position: relative;
+
+                img {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+
+            .description {
+                margin-block: 15px;
+            }
+        }
+    }
+}
+
+.sort-section,
+.pagination-section {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: baseline;
+
+    .title,
+    .content {
+        flex: 0 1 auto;
+        width: auto;
+    }
+
+    .content {
+        margin-inline-start: 15px;
+    }
+}
+
+.pagination,
+.sort {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: baseline;
+
+    .item {
+        @include margin(10px);
+
+        flex: 0 1 auto;
+
+        .current {
+            font-weight: $font-weight-bold;
+        }
+    }
+}
+
+.sort .item {
+    .direction {
+        $size: 1rem;
+        $arrowSize: .4 * $size;
+        vertical-align: middle;
+        display: inline-flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        width: $arrowSize;
+        height: $size;
+
+        > span {
+            transition: opacity 200ms ease-in-out, transform 200ms ease-in-out;
+            opacity: .5;
+            box-sizing: border-box;
+            border-color: currentColor transparent;
+            flex: 0 1 0;
+            border-width: 0 $arrowSize / 1.5;
+            margin: ($size / 2 - $arrowSize) / 2;
+            border-style: solid;
+            overflow: hidden;
+            font-size: 0;
+
+            &.asc {
+                border-block-end-width: $arrowSize;
+            }
+
+            &.desc {
+                border-block-start-width: $arrowSize;
+            }
+        }
+    }
+
+    &:hover {
+        .order-asc .direction .asc,
+        .order-desc .direction .desc {
+            opacity: 1;
+        }
+    }
+
+    .current {
+        .direction span {
+            opacity: 1;
+        }
+
+        &.order-asc .asc,
+        &.order-desc .desc {
+            border-width: 0;
+        }
+
+        &:hover {
+            .direction > span {
+                transform: rotate(180deg);
+            }
+        }
+    }
+}
+
+.pagination {
+    .per-page {
+        form {
+            display: inline-flex;
+            justify-content: flex-start;
+            align-items: baseline;
+        }
+
+        input,
+        button {
+            padding: 3px 10px;
+        }
+
+        input {
+            margin-inline: 8px;
+            height: 100%;
+            max-width: 90px;
+            padding-inline-end: 0;
+        }
+    }
+}

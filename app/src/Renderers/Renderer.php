@@ -2,7 +2,10 @@
 
 namespace Renderers;
 
-interface Renderer
+use Extensions\WithConfig;
+use Extensions\WithLogger;
+
+interface Renderer extends WithLogger, WithConfig
 {
     public const string RENDERER_DEFAULT = "default";
     public const string RENDERER_HTML = "html";
@@ -11,4 +14,6 @@ interface Renderer
 
     public function render(mixed $data = null, array | null $parameters = null): void;
     public function renderError(mixed $data = null, int $code = 500, array | null $parameters = null): void;
+
+    public function renderContent(mixed $data = null, array | null $parameters = null): void;
 }

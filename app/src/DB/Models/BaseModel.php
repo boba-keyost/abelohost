@@ -4,13 +4,18 @@ namespace DB\Models;
 
 use DB\DB;
 use DB\ParamsList;
+use DB\Rows;
 use Extensions\DBExtension;
+use Features\SortFields\SortFields;
 use PDO;
 use stdClass;
 
 abstract class BaseModel implements Model
 {
     use DBExtension;
+
+    protected const string PARAM_LIMIT = "limit";
+    protected const string PARAM_OFFSET = "offset";
 
     public function __construct(DB $db)
     {
@@ -20,10 +25,10 @@ abstract class BaseModel implements Model
     protected function queryWithLimit(string $query, int $limit = -1, int $offset = 0): string
     {
         if ($limit >= 0) {
-            $query .= " LIMIT :limit";
+            $query .= " LIMIT :" . static::PARAM_LIMIT;
         }
         if ($offset > 0) {
-            $query .= " OFFSET :offset";
+            $query .= " OFFSET :" . static::PARAM_OFFSET;
         }
         return $query;
     }
@@ -32,12 +37,32 @@ abstract class BaseModel implements Model
     {
         $params = ParamsList::prepare($params);
         if ($limit >= 0) {
-            $params->set('limit', $limit, PDO::PARAM_INT);
+            $params->set(static::PARAM_LIMIT, $limit, PDO::PARAM_INT);
         }
         if ($offset > 0) {
-            $params->set('offset', $offset, PDO::PARAM_INT);
+            $params->set(static::PARAM_OFFSET, $offset, PDO::PARAM_INT);
         }
         return $params;
+    }
+
+    protected function queryWithSorting(
+        string $query,
+        iterable $sortFields = [],
+        array | ParamsList $params = []
+    ): string {
+        $sortFields = $this->prepareSortField($sortFields);
+        ParamsList::prepare($params);
+
+        if ($sortFields->count() > 0) {
+            $query .= " ORDER BY " . $sortFields;
+        }
+
+        return $query;
+    }
+
+    protected function paramsWithSorting(array | ParamsList $params = [], iterable $sortFields = []): ParamsList
+    {
+        return ParamsList::prepare($params);
     }
 
     protected function queryWithList(string $query, array | ParamsList $params = []): string
@@ -71,6 +96,28 @@ abstract class BaseModel implements Model
         return ParamsList::prepare($params);
     }
 
+    public function getAllowedSortFields(): array
+    {
+        return [];
+    }
+
+    public function getDefaultSortFields(): array
+    {
+        return [];
+    }
+
+    public function prepareSortField(
+        SortFields | array | null $sortFields = null,
+        array $allowedFields = [],
+        array $defaultFields = []
+    ): SortFields {
+        return SortFields::init(
+            $sortFields,
+            !empty($allowedFields) ? $allowedFields : $this->getAllowedSortFields(),
+            !empty($defaultFields) ? $defaultFields : $this->getDefaultSortFields(),
+        );
+    }
+
     protected function getValue(string $query, array | ParamsList $params = []): string | int
     {
         $st = $this->getDb()->execute($query, $params);
@@ -79,19 +126,19 @@ abstract class BaseModel implements Model
         return $col[0];
     }
 
-    protected function getRows(string $query, array | ParamsList $params = []): array
+    protected function getRows(string $query, array | ParamsList $params = []): Rows
     {
-        $rows = [];
         $st = $this->getDb()->execute($query, $params);
-        while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-            $rows[] = $row;
-        }
 
-        return $rows;
+        $st->setFetchMode(PDO::FETCH_ASSOC);
+        return new Rows($st);
     }
 
-    protected function getObject(string $query, array | ParamsList $params = [], string $class = stdClass::class): array
-    {
+    protected function getObject(
+        string $query,
+        array | ParamsList $params = [],
+        string $class = stdClass::class
+    ): object | false {
         $st = $this->getDb()->execute($query, $params);
         $st->setFetchMode(PDO::FETCH_CLASS, $class);
         return $st->fetch();
@@ -101,25 +148,16 @@ abstract class BaseModel implements Model
         string $query,
         array | ParamsList $params = [],
         string $class = stdClass::class
-    ): array {
-        $rows = [];
+    ): Rows {
         $st = $this->getDb()->execute($query, $params);
         $st->setFetchMode(PDO::FETCH_CLASS, $class);
-        while ($row = $st->fetch()) {
-            $rows[] = $row;
-        }
-
-        return $rows;
+        return new Rows($st);
     }
 
-    protected function getColumn(string $query, array | ParamsList $params = []): array
+    protected function getColumn(string $query, int $index = 0, array | ParamsList $params = []): Rows
     {
-        $values = [];
         $st = $this->getDb()->execute($query, $params);
-        while ($val = $st->fetch(PDO::FETCH_COLUMN)) {
-            $values[] = $val;
-        }
-
-        return $values;
+        $st->setFetchMode(PDO::FETCH_COLUMN, $index);
+        return new Rows($st);
     }
 }

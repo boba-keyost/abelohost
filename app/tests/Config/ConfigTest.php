@@ -1,14 +1,12 @@
 <?php declare(strict_types=1);
 namespace Tests\Config;
 
+use Config\Config;
 use Config\ConfigLoader;
 use Config\Error;
-use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-
-use \Config\Config;
 
 #[CoversClass(Config::class)]
 class ConfigTest extends TestCase {
@@ -27,11 +25,13 @@ class ConfigTest extends TestCase {
 
         $this->assertEquals(
             [
+                'debug' => true,
                 'log_level' => 1,
                 'db_host' => 'testhost',
                 'db_name' => 'testname',
                 'db_user' => 'abelohost',
                 'db_password' => '123',
+                'db_port' => '3306',
             ],
             $cfg,
         );
