@@ -47,11 +47,13 @@ class App
 
     public function run(): void
     {
+        session_start();
         try {
-            $this->router->run();
+            $this->router->run(null, null, null, null, null);
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
             echo $exception->getMessage();
         }
+        session_write_close();
     }
 }

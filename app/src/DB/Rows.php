@@ -100,4 +100,24 @@ class Rows implements Iterator, Countable
     {
         return $this->fetchFinished ? count($this->keys) : $this->st->rowCount();
     }
+
+    public function toArray(): array
+    {
+        if (!$this->fetchFinished) {
+            while ($this->valid()) {
+                $this->next();
+            }
+        }
+        return $this->rows;
+    }
+
+    public function toJson(int $options = 0): string
+    {
+        return json_encode($this->toArray(), $options);
+    }
+
+    public function __toString(): string
+    {
+        return implode(", ", $this->toArray());
+    }
 }

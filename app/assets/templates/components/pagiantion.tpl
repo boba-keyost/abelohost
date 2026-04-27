@@ -18,7 +18,7 @@
                 {block name="link-content" assign="link_content"}
                     <span class="page">{$page->getNum()}</span>
                 {/block}
-                <li class="item{if $page->isCurrent()} current{/if}">
+                <li class="item">
                     {include file="components/link.tpl" content=$link_content class="pagiantion-link{if $page->isCurrent()} current{/if}" href="?"|cat:$page->queryParam($query_parameters)}
                 </li>
             {/foreach}{/if}

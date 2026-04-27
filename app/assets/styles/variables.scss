@@ -1,5 +1,7 @@
 $bg-color: #fff !default;
 $default-color: #484848 !default;
+$border-color: #424242 !default;
+
 $link-color: #83919a !default;
 $link-color-active: #4d6678 !default;
 
@@ -68,29 +70,37 @@ $heading-6-font-style: italic !default;
 $heading-6-margin-inline: 0 !default;
 $heading-6-margin-block: 5px !default;
 
-@mixin margin($margin-inline: null, $margin-block: null) {
+@mixin inlineBlockProp($prop, $margin-inline: null, $margin-block: null) {
     @if $margin-inline != null {
-        margin-inline: $margin-inline;
+        #{$prop}-inline: $margin-inline;
     }
     @if $margin-block != null {
-        margin-block: $margin-block;
+        #{$prop}-block: $margin-block;
     }
 
     &:first-child {
         @if $margin-inline != null {
-            margin-inline-start: 0;
+            #{$prop}-inline-start: 0;
         }
         @if $margin-block != null {
-            margin-block-start: 0;
+            #{$prop}-block-start: 0;
         }
     }
 
     &:last-child {
         @if $margin-inline != null {
-            margin-inline-end: 0;
+            #{$prop}-inline-end: 0;
         }
         @if $margin-block != null {
-            margin-block-end: 0;
+            #{$prop}-block-end: 0;
         }
     }
+}
+
+@mixin margin($margin-inline: null, $margin-block: null) {
+    @include inlineBlockProp("margin", $margin-inline, $margin-block);
+}
+
+@mixin padding($padding-inline: null, $padding-block: null) {
+    @include inlineBlockProp("padding", $padding-inline, $padding-block);
 }

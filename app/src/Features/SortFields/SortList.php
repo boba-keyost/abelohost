@@ -13,8 +13,7 @@ class SortList
             $selected[] = $sortField->getField();
         }
         foreach ($sortFields->getAllowedSortFields() as $field) {
-            $this->fields[] = new SortField($field)
-                ->setCurrent(in_array($field, $selected));
+            $this->fields[] = $sortFields->getOrCreateField($field);
         }
     }
 

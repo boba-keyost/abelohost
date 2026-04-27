@@ -19,7 +19,7 @@ class Error extends Exception
             $message = "[Code: " . $code . "]" . $message;
             $code = intval($code);
         }
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, $code ?? 0, $previous);
     }
 
     public function unwrap(): Throwable

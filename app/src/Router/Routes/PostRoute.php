@@ -2,10 +2,11 @@
 
 namespace Router\Routes;
 
-use DB\Models\Types\CategoryWithPosts;
 use Renderers\RendererType;
 use Router\BaseRoute;
+use Router\Error;
 use Router\RouteAttribute;
+use Router\ServerInfo;
 
 #[RouteAttribute(
     "",
@@ -16,33 +17,74 @@ class PostRoute extends BaseRoute
 {
     public function handle(array $parameters = [], mixed $body = null): mixed
     {
-        $category = $this->getDb()->categories()->getCategoryByPost();
-        $posts = [];
-        if (!empty($lastCategories)) {
-            $postIds = [];
-            /** @var CategoryWithPosts $category */
-            foreach ($lastCategories as $category) {
-                $category->posts_ids = array_slice($category->posts_ids, 0, 3);
-                /** @var array $categoryPosts */
-                $categoryPosts = $category->posts_ids;
-                $i = 0;
-                while ($i < count($categoryPosts)) {
-                    $pid = $categoryPosts[$i];
-                    if (!in_array($pid, $postIds)) {
-                        $postIds[] = $pid;
-                    }
-                    $i++;
+        $post = $this->getDb()->posts()->getPostWithViewsBySlug($parameters["slug"] ?? "");
+        if (!$post) {
+            throw Error::notFound("Post not found");
+        }
+
+        $categories = $this->getDb()->posts()->getPostCategoryIdsWithName($post->id);
+        $keywords = $this->getDb()->posts()->getPostKeywordIdsWithName($post->id);
+
+        $categoryList = [];
+        $keywordsList = [];
+
+        $categoryIdList = [];
+        $keywordIdsList = [];
+
+        foreach ($categories as $category) {
+            $categoryIdList[] = $category->id;
+            $categoryList[] = $category->name;
+        }
+
+        foreach ($keywords as $keyword) {
+            $keywordIdsList[] = $keyword->id;
+            $keywordsList[] = $keyword->name;
+        }
+
+        $titleKeywords = array_reduce(
+            explode(" ", $post->name),
+            function (array $keywords, string $word) {
+                $word = preg_replace("/\W/", "", trim($word));
+                if (strlen($word) > 3) {
+                    $keywords[] = $word;
                 }
-            }
-            $postsList = $this->getDb()->posts()->getPostsWithViewsByIds($postIds);
-            foreach ($postsList as $post) {
-                $posts[$post->id] = $post;
+                return $keywords;
+            },
+            [],
+        );
+
+        $queries = [
+            '"' . $post->name . '"',
+            implode(" ", $keywordsList),
+            implode(" ", $titleKeywords),
+        ];
+
+        $similarPosts = $this->getDb()->posts()->getSimilarPosts(
+            $post->id,
+            $categoryIdList,
+            $keywordIdsList,
+            "(" . implode(") (", $queries) . ")",
+            3,
+        );
+
+        if (!empty($parameters["serverInfo"])) {
+            /** @var ServerInfo $serverInfo */
+            $serverInfo = $parameters["serverInfo"];
+            $res = $this->getDb()->posts()->addPostView(
+                $post->id,
+                $serverInfo->getVisitorId(),
+                $serverInfo->toJson(JSON_PRETTY_PRINT),
+            );
+            if ($res) {
+                $post->views += 1;
             }
         }
 
         return [
-            'posts' => $posts,
-            'categories' => $lastCategories,
+            'post' => $post,
+            'categories' => $categoryList,
+            'keywords' => $keywordsList,
+            'similar_posts' => $similarPosts,
         ];
     }
 }

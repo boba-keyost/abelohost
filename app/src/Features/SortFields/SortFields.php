@@ -8,8 +8,10 @@ use Iterator;
 class SortFields implements Iterator, Countable
 {
     protected array $allowedFields = [];
-    protected array $defaultFields = [];
-    protected array $fields = [];
+
+    protected array $registeredFields = [];
+
+    protected array $list = [];
     protected int $i = 0;
 
     protected bool $checkUnknown = true;
@@ -17,7 +19,7 @@ class SortFields implements Iterator, Countable
     public function __construct(array $allowedFields = [], array $defaultFields = [])
     {
         $this->allowedFields = $allowedFields;
-        $this->defaultFields = $this->prepare($defaultFields);
+        $this->setFields($defaultFields, true);
     }
 
     public function getCheckUnknown(): bool
@@ -50,14 +52,20 @@ class SortFields implements Iterator, Countable
         }
     }
 
+    public function checkFieldAllowed(?string $field = null): bool
+    {
+        if ($field && in_array($field, $this->getAllowedSortFields())) {
+            return true;
+        } elseif ($field && $this->getCheckUnknown()) {
+            throw new Error("Unknown field '$field'.");
+        } else {
+            return false;
+        }
+    }
+
     public function getAllowedSortFields(): array
     {
         return $this->allowedFields;
-    }
-
-    public function getFields(): array
-    {
-        return empty($this->fields) ? $this->defaultFields : $this->fields;
     }
 
     public function setAllowedFields(array $allowedFields): static
@@ -66,17 +74,48 @@ class SortFields implements Iterator, Countable
         return $this;
     }
 
-    public function setFields(mixed $fields): static
+    public function setFields(mixed $fields, bool $isDefaultFields = false, bool $reset = true): static
     {
-        $this->fields = $this->prepare($fields);
-
+        if (!$isDefaultFields) {
+            /** @var SortField $field */
+            foreach ($this->registeredFields as $field) {
+                $field->setCurrent(false);
+                $field->resetDefaultOrder();
+                $field->setOrder("asc");
+            }
+        }
+        $fields = $this->prepare($fields, $isDefaultFields);
+        if ($reset) {
+            $this->list = [];
+        }
+        /** @var SortField $field */
+        foreach ($fields as $field) {
+            $k = $field->getField();
+            $field->setCurrent(true);
+            if ($isDefaultFields) {
+                $field->setDefaultOrder($field->getOrder());
+            } else {
+                $field->setTouched(true);
+            }
+            $this->list[] = $k;
+            $this->registeredFields[$k] = $field;
+        }
         return $this;
     }
 
-    public function add($fields): static
+    public function getField(string $field): ?SortField
     {
-        $this->fields = array_merge($this->fields, $this->prepare($fields));
-        return $this;
+        return $this->checkFieldAllowed($field) ? $this->registeredFields[$field] ?? null : null;
+    }
+
+    public function getOrCreateField(string $field): ?SortField
+    {
+        $fld = $this->getField($field);
+        if (is_null($fld)) {
+            $fld = new SortField($field);
+        }
+
+        return $fld;
     }
 
     /**
@@ -111,10 +150,11 @@ class SortFields implements Iterator, Countable
                     }
                 }
 
-                if ($field && in_array($field, $this->getAllowedSortFields())) {
-                    $fields[] = new SortField($field, $order);
-                } elseif ($field && $this->getCheckUnknown()) {
-                    throw new Error("Unknown field '$field'.");
+                if ($this->checkFieldAllowed($field)) {
+                    $fld = $this->getOrCreateField($field)
+                        ->setOrder($order);
+
+                    $fields[] = $fld;
                 }
 
                 return $fields;
@@ -131,7 +171,7 @@ class SortFields implements Iterator, Countable
 
     public function current(): mixed
     {
-        return $this->fields[$this->i];
+        return $this->getField($this->list[$this->i]);
     }
 
     public function next(): void
@@ -146,7 +186,7 @@ class SortFields implements Iterator, Countable
 
     public function valid(): bool
     {
-        return $this->i < count($this->fields);
+        return $this->i < $this->count();
     }
 
     public function rewind(): void
@@ -156,11 +196,23 @@ class SortFields implements Iterator, Countable
 
     public function count(): int
     {
-        return count($this->fields);
+        return count($this->list);
+    }
+
+    public function toArray(): array
+    {
+        return array_reduce(
+            $this->list,
+            function (array $fields, string $field): array {
+                $fields[] = $this->getField($field);
+                return $fields;
+            },
+            []
+        );
     }
 
     public function __toString(): string
     {
-        return implode(', ', $this->fields);
+        return implode(', ', $this->toArray());
     }
 }

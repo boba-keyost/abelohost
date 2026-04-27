@@ -3,8 +3,9 @@
 namespace DB\Models\Types;
 
 use FastVolt\Helper\Markdown;
+use Features\Functions;
 
-class Post
+class Post extends BaseType
 {
     use WithCreated;
     use WithSoftDelete;
@@ -16,6 +17,8 @@ class Post
     public string | Markdown $description;
     public string | Markdown $content;
 
+    protected bool $hasDescription;
+
     public function __construct()
     {
         $this->initCreatedFields();
@@ -25,14 +28,14 @@ class Post
             $md->setContent($this->content);
             $this->content = $md;
         }
-        if (empty($this->description)) {
-            $content = substr(
-                strip_tags($this->content->toHtml()),
-                0,
-                300,
-            );
-
-            $this->description = substr($content, 0, strripos($content, ' '));
+        $this->hasDescription = !empty($this->description);
+        if (!$this->hasDescription) {
+            $this->description = Functions::cutText($this->content->toHtml(), 300);
         }
+    }
+
+    public function hasDescription(): bool
+    {
+        return $this->hasDescription;
     }
 }

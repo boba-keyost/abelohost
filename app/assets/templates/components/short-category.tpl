@@ -3,11 +3,11 @@
     {block name="category" assign="content"}
         {if $post_ids}
             {foreach $post_ids as $pid}
-                {include file="components/short-post.tpl" class="item" post=$posts->getByKey($pid)}
+                {include file="components/post-short.tpl" class="item" post=$posts->getByKey($pid)}
             {/foreach}
         {else}
             {foreach $posts as $post}
-                {include file="components/short-post.tpl" class="item" post=$post}
+                {include file="components/post-short.tpl" class="item" post=$post}
             {/foreach}
         {/if}
     {/block}

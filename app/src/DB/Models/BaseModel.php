@@ -118,6 +118,12 @@ abstract class BaseModel implements Model
         );
     }
 
+    protected function execute(string $query, array | ParamsList $params = []): bool
+    {
+        $res = $this->getDb()->execute($query, $params);
+        return (bool)$res;
+    }
+
     protected function getValue(string $query, array | ParamsList $params = []): string | int
     {
         $st = $this->getDb()->execute($query, $params);

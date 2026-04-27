@@ -1,0 +1,124 @@
+@import "variables";
+
+main > .content {
+    display: flex;
+    flex-flow: row nowrap;
+
+    > .post {
+        flex: 3 0 0;
+        margin-block: 40px;
+        padding-inline-end: 20px;
+        box-sizing: border-box;
+    }
+
+    > .sidebar {
+        flex: 1 0 0;
+        margin-block: 40px;
+
+        &:empty {
+            display: none;
+        }
+    }
+}
+
+.post {
+    clear: both;
+
+    .image {
+        width: 300px;
+        float: inline-start;
+        margin-inline-end: 15px;
+        margin-block-end: 15px;
+    }
+
+    > .title {
+        width: auto;
+
+        .text {
+            margin-block-start: 0;
+        }
+    }
+
+    .post-content {
+        p {
+            margin-block: 10px;
+        }
+    }
+
+    .details {
+        .row {
+            @include margin(null, 10px)
+        }
+
+        dt,
+        dd {
+            display: inline-block;
+        }
+
+        dt {
+            font-weight: $font-weight-medium;
+        }
+
+        dd {
+            font-weight: $font-weight-thin;
+            font-style: italic;
+        }
+    }
+}
+
+.similar-posts {
+    > .title .text {
+        margin-block-start: 0;
+    }
+}
+
+.similar-posts-list {
+    .item {
+        @include padding(null, 20px);
+
+        border-block-end: 1px dotted $border-color;
+
+        &:last-child {
+            border-block-end: 0;
+        }
+    }
+
+    .post-card {
+        display: flex;
+        flex-flow: row wrap;
+
+        > .image {
+            flex: 0 0 auto;
+            width: 75px;
+            float: inline-start;
+            margin-block-end: 10px;
+            margin-inline-end: 10px;
+        }
+
+        > .content {
+            width: auto;
+            flex: 1 1 50%;
+
+            > .title {
+                width: auto;
+                margin-block-end: 0;
+
+                .text {
+                    margin-block-start: 0;
+                }
+            }
+        }
+
+        .description {
+            margin-block: 5px;
+        }
+
+        .post-card-date {
+            font-style: italic;
+        }
+
+        .post-card-link {
+            font-weight: $font-weight-bold;
+        }
+    }
+}

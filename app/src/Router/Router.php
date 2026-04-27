@@ -166,8 +166,13 @@ class Router
         return null;
     }
 
-    public function run(?string $method = null, ?string $path = null, mixed $body = null): void
-    {
+    public function run(
+        ?string $method = null,
+        ?string $path = null,
+        mixed $body = null,
+        ?string $sessionId = null,
+        ?array $serverInfo = null
+    ): void {
         if (is_null($method)) {
             $method = $_SERVER['REQUEST_METHOD'] ?? "GET";
         }
@@ -177,10 +182,19 @@ class Router
         if (is_null($body)) {
             $body = file_get_contents('php://input');
         }
+        if (is_null($sessionId)) {
+            $sessionId = session_id();
+        }
+        if (is_null($serverInfo)) {
+            $serverInfo = $_SERVER;
+        }
         $parameters = [];
         $route = $this->resolve($method, $path, $parameters);
         if (!is_null($route)) {
             try {
+                if (!is_null($serverInfo)) {
+                    $parameters["serverInfo"] = ServerInfo::fromServerInfo($sessionId, $serverInfo);
+                }
                 $route->run($parameters, $body);
             } catch (Throwable $e) {
                 $route->error($e);

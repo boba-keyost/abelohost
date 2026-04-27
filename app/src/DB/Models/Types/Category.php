@@ -2,7 +2,7 @@
 
 namespace DB\Models\Types;
 
-class Category
+class Category extends BaseType
 {
     use WithCreated;
     use WithSoftDelete;

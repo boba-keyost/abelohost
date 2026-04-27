@@ -5,6 +5,7 @@ namespace App;
 use Extensions\ConfigExtension;
 use Features\Assets\Assets;
 use Features\Assets\AssetType;
+use Features\Functions;
 use Smarty\Smarty;
 
 class Template
@@ -44,6 +45,13 @@ class Template
                 "prepare_error",
                 function (mixed $err) {
                     return Error::fromError($err)->unwrap();
+                }
+            );
+            $this->smarty->registerPlugin(
+                "modifier",
+                "cut_text",
+                function (string $text, int $len = 150) {
+                    return Functions::cutText($text, $len);
                 }
             );
             $this->smarty->registerPlugin(

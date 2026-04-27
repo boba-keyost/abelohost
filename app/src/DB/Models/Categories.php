@@ -21,7 +21,7 @@ INNER JOIN
     `posts_categories` AS `pc` ON `pc`.`category_id` = `c`.`id`
 INNER JOIN 
     `posts` AS `p` ON `p`.`id` = `pc`.`post_id`
-WHERE `p`.`deleted_at` = 0
+WHERE `p`.`deleted_at` = 0 AND `c`.`deleted_at` = 0
 GROUP BY `c`.`slug`, `c`.`name`, `c`.`id`  
 ORDER BY max(`p`.`updated_at`) DESC, max(`p`.`created_at`) DESC
 ";
@@ -44,6 +44,7 @@ ORDER BY max(`p`.`updated_at`) DESC, max(`p`.`created_at`) DESC
 FROM 
     `categories` AS `c`
 WHERE `c`.`slug` = :slug
+AND `c`.`deleted_at` = 0
 ";
 
     public function getCategoryBySlug(string $slug): Category | false

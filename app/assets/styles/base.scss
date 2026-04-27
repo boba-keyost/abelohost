@@ -2,6 +2,7 @@
 
 body {
     background-color: $bg-color;
+    font-family: $font-family;
     font-size: $font-size-default;
     display: flex;
     flex-flow: column nowrap;
@@ -67,6 +68,12 @@ h6 {
     color: $heading-6-color;
     margin-inline: $heading-6-margin-inline;
     margin-block: $heading-6-margin-block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    a {
+        color: inherit;
+    }
 }
 
 pre {
@@ -144,7 +151,7 @@ main {
 }
 
 footer {
-    margin-top: auto;
+    margin-block-start: auto;
     flex: 0 1 $footer-size;
     box-sizing: border-box;
     background-color: $footer-bg-color;

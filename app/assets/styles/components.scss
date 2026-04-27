@@ -7,7 +7,7 @@
 .section {
     .title {
         width: 100%;
-        margin-bottom: 15px;
+        margin-block-end: 15px;
         display: flex;
         flex-flow: row;
         justify-content: space-between;
@@ -28,7 +28,7 @@
     margin-block: 20px;
 
     > .title {
-        margin-bottom: 10px;
+        margin-block-end: 10px;
     }
 
     .details {
@@ -66,7 +66,7 @@
         margin-inline: -$m-inline;
         margin-block: -$m-inline;
 
-        .short-post {
+        .post-short {
             flex: 0 1 33%;
             padding-inline: $m-inline;
             padding-block: $m-inline;
@@ -130,7 +130,7 @@
     }
 }
 
-.sort .item {
+.sort .sort-link {
     .direction {
         $size: 1rem;
         $arrowSize: .4 * $size;
@@ -142,7 +142,9 @@
         height: $size;
 
         > span {
-            transition: opacity 200ms ease-in-out, transform 200ms ease-in-out;
+            transition-property: opacity, transform, border-width;
+            transition-duration: 200ms;
+            transition-timing-function: ease-in-out;
             opacity: .5;
             box-sizing: border-box;
             border-color: currentColor transparent;
@@ -163,29 +165,56 @@
         }
     }
 
+    &.current {
+        &:not(.next-reset:hover) {
+            &.order-asc .desc,
+            &.order-desc .asc {
+                border-width: 0;
+                opacity: 1;
+            }
+        }
+
+        &:hover:not(.next-reset) .direction > span {
+            opacity: 1;
+            transform: rotate(180deg);
+        }
+    }
+
+    &:hover {
+        &.next-asc .asc,
+        &.next-desc .desc {
+            opacity: 1;
+        }
+    }
+
+    /*&:hover {
+        &:not(.next-reset) {
+            &.order-asc .direction .asc,
+            &.order-desc .direction .desc {
+                opacity: 1;
+            }
+        }
+    }
+
+
     &:hover {
         .order-asc .direction .asc,
-        .order-desc .direction .desc {
+        .order-desc:not(.current) .direction .desc {
             opacity: 1;
         }
     }
 
     .current {
-        .direction span {
-            opacity: 1;
-        }
-
-        &.order-asc .asc,
-        &.order-desc .desc {
+        &.order-asc .desc,
+        &.order-desc:not(&:hover) .asc {
             border-width: 0;
         }
 
-        &:hover {
-            .direction > span {
-                transform: rotate(180deg);
-            }
+        &.order-asc:hover .direction > span {
+            opacity: 1;
+            transform: rotate(180deg);
         }
-    }
+    }*/
 }
 
 .pagination {
