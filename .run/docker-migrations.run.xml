@@ -27,7 +27,6 @@
           </list>
         </option>
         <option name="sourceFilePath" value="docker-compose.yml" />
-        <option name="upDetach" value="false" />
         <option name="upForceRecreate" value="true" />
         <option name="upNoDeps" value="true" />
         <option name="upTimeout" value="1" />

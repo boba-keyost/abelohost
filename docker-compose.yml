@@ -17,38 +17,39 @@ services:
       - './build/mysql/data:/var/lib/mysql'
       - './build/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf'
 
-#  ollama:
-#    image: docker.io/ollama/ollama:latest
-#    ports:
-#      - "11434:11434"
-#    container_name: ollama
-#    pull_policy: always
-#    tty: true
-#    restart: always
-#    environment:
-#      - OLLAMA_KEEP_ALIVE=24h
-#      - OLLAMA_HOST=0.0.0.0
-#    volumes:
-#      - './build/ollama:/root/.ollama'
+  #  ollama:
+  #    image: docker.io/ollama/ollama:latest
+  #    ports:
+  #      - "11434:11434"
+  #    container_name: ollama
+  #    pull_policy: always
+  #    tty: true
+  #    restart: always
+  #    environment:
+  #      - OLLAMA_KEEP_ALIVE=24h
+  #      - OLLAMA_HOST=0.0.0.0
+  #    volumes:
+  #      - './build/ollama:/root/.ollama'
 
   migrations:
-      build:
-        dockerfile: build/docker/migrations.Dockerfile
-      working_dir: /app
-      environment:
-        MIGRATION_CONNECTION: mysql://abelohost_test_user:abelohost_test_password@abelohost-mysql/abelohost_test
-        MIGRATION_PATH: /app/structure
-      security_opt:
-        - "seccomp:unconfined"
-      cap_add:
-        - SYS_PTRACE
-      volumes:
-        - ./build/mysql/structure:/app/structure
-      restart: on-failure
-      command: composer migrate:install-up
-      depends_on:
-        mysql:
-          condition: service_started
+    build:
+      dockerfile: build/docker/migrations.Dockerfile
+    working_dir: /app
+    environment:
+      MIGRATION_CONNECTION: mysql://abelohost_test_user:abelohost_test_password@abelohost-mysql/abelohost_test
+      MIGRATION_PATH: /app/structure
+    security_opt:
+      - "seccomp:unconfined"
+    cap_add:
+      - SYS_PTRACE
+    volumes:
+      - ./build/mysql/structure:/app/structure
+    restart: on-failure
+    tty: true
+    #command: composer migrate:install-up
+    depends_on:
+      mysql:
+        condition: service_started
 
   app:
     build:
