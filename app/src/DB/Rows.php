@@ -4,9 +4,10 @@ namespace DB;
 
 use Countable;
 use Iterator;
+use JsonSerializable;
 use PDOStatement;
 
-class Rows implements Iterator, Countable
+class Rows implements Iterator, Countable, JsonSerializable
 {
     protected PDOStatement $st;
     protected array $rows = [];
@@ -111,9 +112,9 @@ class Rows implements Iterator, Countable
         return $this->rows;
     }
 
-    public function toJson(int $options = 0): string
+    public function jsonSerialize(): mixed
     {
-        return json_encode($this->toArray(), $options);
+        return $this->toArray();
     }
 
     public function __toString(): string

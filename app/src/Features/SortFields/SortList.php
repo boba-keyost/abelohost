@@ -2,16 +2,17 @@
 
 namespace Features\SortFields;
 
-class SortList
+use JsonSerializable;
+
+class SortList implements JsonSerializable
 {
     protected array $fields = [];
 
+    protected SortFields $sortFields;
+
     public function __construct(SortFields $sortFields)
     {
-        $selected = [];
-        foreach ($sortFields as $sortField) {
-            $selected[] = $sortField->getField();
-        }
+        $this->sortFields = $sortFields;
         foreach ($sortFields->getAllowedSortFields() as $field) {
             $this->fields[] = $sortFields->getOrCreateField($field);
         }
@@ -20,5 +21,10 @@ class SortList
     public function getList(): array
     {
         return $this->fields;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->sortFields;
     }
 }

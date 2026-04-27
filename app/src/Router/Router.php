@@ -193,6 +193,9 @@ class Router
         if (!is_null($route)) {
             try {
                 if (!is_null($serverInfo)) {
+                    if (isset($parameters['query']['json'])) {
+                        $serverInfo["CONTENT_TYPE"] = "application/json";
+                    }
                     $parameters["serverInfo"] = ServerInfo::fromServerInfo($sessionId, $serverInfo);
                 }
                 $route->run($parameters, $body);

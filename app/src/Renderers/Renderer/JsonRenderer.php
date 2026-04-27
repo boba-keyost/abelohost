@@ -12,6 +12,7 @@ class JsonRenderer extends BaseRenderer
         if (!empty($parameters["prettyPrint"])) {
             $flags = JSON_PRETTY_PRINT;
         }
+
         parent::renderContent(json_encode($data, $flags));
     }
 

@@ -73,7 +73,7 @@ class PostRoute extends BaseRoute
             $res = $this->getDb()->posts()->addPostView(
                 $post->id,
                 $serverInfo->getVisitorId(),
-                $serverInfo->toJson(JSON_PRETTY_PRINT),
+                json_encode($serverInfo, JSON_PRETTY_PRINT),
             );
             if ($res) {
                 $post->views += 1;

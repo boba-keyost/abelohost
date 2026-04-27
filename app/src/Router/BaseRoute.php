@@ -8,6 +8,7 @@ use Extensions\DBExtension;
 use Extensions\LoggerExtension;
 use Renderers\Renderer;
 use Renderers\RendererFabric;
+use Renderers\RendererType;
 use Throwable;
 
 abstract class BaseRoute implements Route
@@ -19,11 +20,21 @@ abstract class BaseRoute implements Route
     protected ?Renderer $renderer;
     protected array $parameters;
 
+    protected ?ServerInfo $serverInfo;
+
     /**
      * @throws Exception
      */
     public function run(array $parameters = [], mixed $body = null): void
     {
+        if (isset($parameters['serverInfo']) && $parameters['serverInfo'] instanceof ServerInfo) {
+            $this->serverInfo = $parameters['serverInfo'];
+        }
+
+        if ($this->serverInfo && $this->serverInfo->isJSON()) {
+            $this->setRenderer(RendererFabric::get(RendererType::Json));
+        }
+
         try {
             $resp = $this->handle($parameters, $body);
             if ($resp instanceof Throwable) {

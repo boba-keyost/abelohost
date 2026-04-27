@@ -2,7 +2,9 @@
 
 namespace Features\Pagination;
 
-class Pagination
+use JsonSerializable;
+
+class Pagination implements JsonSerializable
 {
     protected int $limit = 10;
     protected int $offset = 0;
@@ -111,5 +113,15 @@ class Pagination
         unset($queryParams['offset']);
 
         return http_build_query($queryParams);
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'limit' => $this->getLimit(),
+            'offset' => $this->getOffset(),
+            'total' => $this->getTotal(),
+            'count' => $this->getCount(),
+        ];
     }
 }

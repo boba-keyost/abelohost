@@ -2,14 +2,20 @@
 
 namespace Features\Pagination;
 
-class PagesList
+use JsonSerializable;
+
+class PagesList implements JsonSerializable
 {
     protected array $pages = [];
     protected int $limit = 1;
     protected int $current = 1;
 
+    protected Pagination $pagination;
+
     public function __construct(Pagination $pagination)
     {
+        $this->pagination = $pagination;
+
         $this->limit = $pagination->getLimit();
         $pagesCount = $pagination->getPagesCount();
         $this->current = ceil($pagination->getOffset() / $pagination->getLimit()) + 1;
@@ -48,5 +54,10 @@ class PagesList
     public function getList(): array
     {
         return $this->pages;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->pagination;
     }
 }

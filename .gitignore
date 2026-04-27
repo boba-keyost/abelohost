@@ -101,7 +101,7 @@ frontend/node_modules
 
 
 # env file
-.env
+app/.env
 
 build/nginx/*/data
 build/tmp

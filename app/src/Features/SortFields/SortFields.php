@@ -4,8 +4,9 @@ namespace Features\SortFields;
 
 use Countable;
 use Iterator;
+use JsonSerializable;
 
-class SortFields implements Iterator, Countable
+class SortFields implements Iterator, Countable, JsonSerializable
 {
     protected array $allowedFields = [];
 
@@ -214,5 +215,10 @@ class SortFields implements Iterator, Countable
     public function __toString(): string
     {
         return implode(', ', $this->toArray());
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 }

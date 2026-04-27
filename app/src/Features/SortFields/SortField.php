@@ -2,7 +2,9 @@
 
 namespace Features\SortFields;
 
-class SortField
+use JsonSerializable;
+
+class SortField implements JsonSerializable
 {
     protected string $field = "";
     protected string $order = "ASC";
@@ -122,10 +124,7 @@ class SortField
 
         $paramsList = $append ? $queryParams[$param] ?? [] : [];
 
-        $qParam = [
-            "field" => $this->getField(),
-            "order" => $this->getQueryOrder(),
-        ];
+        $qParam = $this->toArray();
 
         $ind = 0;
         if ($append) {
@@ -149,5 +148,18 @@ class SortField
         $queryParams[$param] = $paramsList;
 
         return http_build_query($queryParams);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            "field" => $this->getField(),
+            "order" => $this->getQueryOrder(),
+        ];
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 }

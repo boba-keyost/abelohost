@@ -6,7 +6,7 @@ run-infra:
 run-migrate-up:
 	$(DOCKER_COMPOSE_UP) migrations && $(DOCKER_COMPOSE) run migrations composer migrate:install-up
 run-app:
-	$(DOCKER_COMPOSE_UP) app
+	ENV=production $(DOCKER_COMPOSE_UP) app
 run-app-debug:
 	PHP_INI_EXT=.debug PHP_IDE_CONFIG="serverName=abelohost" ENV=development $(DOCKER_COMPOSE_UP) app
 

@@ -2,18 +2,28 @@
 
 namespace Router;
 
-class ServerInfo
+use JsonSerializable;
+
+class ServerInfo implements JsonSerializable
 {
     protected string $sessionId;
+    protected string $contentType;
     protected string $remoteIp;
     protected string $httpHost;
     protected string $userAgent;
 
     protected string $visitorId;
 
-    protected function __construct(string $sessionId, string $remoteIp, string $httpHost, string $userAgent)
-    {
+    protected function __construct(
+        string $sessionId,
+        string $contentType,
+        string $remoteIp,
+        string $httpHost,
+        string $userAgent
+    ) {
         $this->sessionId = $sessionId;
+
+        $this->contentType = $contentType;
 
         $this->remoteIp = $remoteIp;
         $this->httpHost = $httpHost;
@@ -21,8 +31,18 @@ class ServerInfo
 
         $this->visitorId = hash(
             "sha256",
-            $this->toJson()
+            json_encode($this),
         );
+    }
+
+    public function getContentType(): string
+    {
+        return $this->contentType;
+    }
+
+    public function isJSON(): bool
+    {
+        return $this->getContentType() === "application/json";
     }
 
     public function getRemoteIp(): string
@@ -40,15 +60,6 @@ class ServerInfo
         return $this->userAgent;
     }
 
-    public static function fromServerInfo(string $sessionId = "", array $serverInfo = []): static
-    {
-        $remoteIp = $serverInfo["X_FORWARDED_FOR"] ?? $serverInfo['REMOTE_ADDR'] ?? '';
-        $httpHost = $serverInfo["X_FORWARDED_HOST"] ?? $serverInfo['HTTP_HOST'] ?? '';
-        $userAgent = $serverInfo['HTTP_USER_AGENT'] ?? '';
-
-        return new static($sessionId, $remoteIp, $httpHost, $userAgent);
-    }
-
     public function getVisitorId(): string
     {
         return $this->visitorId;
@@ -56,20 +67,31 @@ class ServerInfo
 
     public function __toString(): string
     {
-        return $this->toJson(JSON_PRETTY_PRINT);
+        return json_encode($this, JSON_PRETTY_PRINT);
     }
 
     public function toArray(): array
     {
         return [
+            "is_json" => $this->isJSON(),
             "remote_ip" => $this->getRemoteIp(),
             "http_host" => $this->getHttpHost(),
             "user_agent" => $this->getUserAgent(),
         ];
     }
 
-    public function toJson(int $options = 0): string
+    public function jsonSerialize(): mixed
     {
-        return json_encode($this->toArray(), $options);
+        return $this->toArray();
+    }
+
+    public static function fromServerInfo(string $sessionId = "", array $serverInfo = []): static
+    {
+        $remoteIp = $serverInfo["X_FORWARDED_FOR"] ?? $serverInfo['REMOTE_ADDR'] ?? '';
+        $httpHost = $serverInfo["X_FORWARDED_HOST"] ?? $serverInfo['HTTP_HOST'] ?? '';
+        $userAgent = $serverInfo['HTTP_USER_AGENT'] ?? '';
+        $contentType = $serverInfo["CONTENT_TYPE"] ?? '';
+
+        return new static($sessionId, $contentType, $remoteIp, $httpHost, $userAgent);
     }
 }

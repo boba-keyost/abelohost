@@ -4,7 +4,7 @@ namespace Config;
 
 class Config extends BaseConfig
 {
-    #[ConfigAttribute(ConfigAttribute::DEBUG, true)]
+    #[ConfigAttribute(ConfigAttribute::DEBUG, false)]
     protected bool $debug = false;
 
     #[ConfigAttribute(ConfigAttribute::DB_HOST, "mysql")]

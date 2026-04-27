@@ -2,7 +2,6 @@
 
 namespace DB\Models\Types;
 
-use DateTime;
 use Throwable;
 
 trait WithCreated

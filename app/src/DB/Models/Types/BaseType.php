@@ -2,24 +2,25 @@
 
 namespace DB\Models\Types;
 
+use JsonSerializable;
 use stdClass;
 
-class BaseType
+class BaseType implements JsonSerializable
 {
     public function __toString(): string
     {
-        return $this->toJson(JSON_PRETTY_PRINT);
+        return json_encode($this, JSON_PRETTY_PRINT);
     }
 
-    public function toJson(int $options = 0): string
+    public function jsonSerialize(): mixed
     {
         $ref = new \ReflectionClass($this);
         $params = new stdClass();
         foreach ($ref->getProperties() as $property) {
-            if ($property->isPublic()) {
+            if ($property->isPublic() && $property->isInitialized($this)) {
                 $params->{$property->getName()} = $property->getValue($this);
             }
         }
-        return json_encode($params, $options);
+        return $params;
     }
 }

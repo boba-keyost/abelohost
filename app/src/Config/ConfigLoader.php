@@ -3,11 +3,10 @@
 namespace Config;
 
 use ReflectionClass;
-use ReflectionObject;
 
 class ConfigLoader
 {
-    protected string $rootDirectory = __DIR__ . DIRECTORY_SEPARATOR . "app";
+    protected string $rootDirectory = __DIR__ . DIRECTORY_SEPARATOR . "../../";
     protected string | null $environment = null;
     protected string $envPrefix = "ABELOHOST";
 
@@ -52,6 +51,7 @@ class ConfigLoader
     {
         if (!$target->isLoaded()) {
             $filesToLoad = [
+                ".env",
                 ".env",
                 ".env." . $this->getEnvironment(),
             ];

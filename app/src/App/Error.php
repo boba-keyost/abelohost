@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Config\Config;
 use Exception;
+use JsonSerializable;
 use Throwable;
 
-class Error extends Exception
+class Error extends Exception implements JsonSerializable
 {
     protected const string PREFIX = "";
     protected bool $wrapped = false;
@@ -56,5 +58,24 @@ class Error extends Exception
     public static function notFound(string $message): static
     {
         return new static($message, 404);
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
+    }
+
+    public function toArray(): array
+    {
+        $data = [
+            "message" => $this->getMessage(),
+            "code" => $this->getCode(),
+        ];
+        if (Config::defaultConfig()->debug) {
+            $data["file"] = $this->getFile();
+            $data["line"] = $this->getLine();
+            $data["trace"] = $this->getTrace();
+        }
+        return $data;
     }
 }

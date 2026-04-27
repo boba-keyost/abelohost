@@ -42,6 +42,7 @@ class CategoryRoute extends BaseRoute
                 $pagination->getLimit(),
                 $pagination->getOffset(),
             );
+            $pagination->setCount(count($posts));
         }
 
 
