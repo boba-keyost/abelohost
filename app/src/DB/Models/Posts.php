@@ -135,7 +135,7 @@ FROM
     `posts` AS `p`
 LEFT JOIN `post_views` AS `pv` ON `pv`.`post_id` = `p`.`id`
 INNER JOIN `posts_categories` AS `pc` ON `pc`.`post_id` = `p`.`id`
-INNER JOIN `categories` AS `c` ON `pc`.`category_id` = `p`.`id`
+INNER JOIN `categories` AS `c` ON `pc`.`category_id` = `c`.`id`
 WHERE `p`.`slug` = :slug
     AND `c`.`deleted_at` = 0
     AND `p`.`deleted_at` = 0
