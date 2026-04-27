@@ -16,6 +16,10 @@ services:
     volumes:
       - './build/mysql/data:/var/lib/mysql'
       - './build/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf'
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
 
   #  ollama:
   #    image: docker.io/ollama/ollama:latest
@@ -49,7 +53,7 @@ services:
     #command: composer migrate:install-up
     depends_on:
       mysql:
-        condition: service_started
+        condition: service_healthy
 
   app:
     build:
@@ -74,3 +78,6 @@ services:
     restart: on-failure
     extra_hosts:
       - host.docker.internal:host-gateway
+    depends_on:
+      mysql:
+        condition: service_healthy
